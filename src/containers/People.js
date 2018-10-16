@@ -9,10 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles }  from '@material-ui/core/styles';
 // import { withStyles } from 'material-ui/styles';
 import {getUsers} from '../actions/hubAction'
+import {getTodos} from '../actions/hubAction'
 import PropTypes from "prop-types";
 import {bindActionCreators} from "redux";
 import compose from "recompose/compose";
 import connect from "react-redux/es/connect/connect";
+import Button from "@material-ui/core/Button/Button";
 
 const api = new RestApi('https://jsonplaceholder.typicode.com');
 
@@ -25,6 +27,16 @@ const styles = theme => ({
     table: {
         minWidth: 700,
     },
+    userButton: {
+        // borderStyle: 'solid',
+        color:'green',
+        gridColumn: 2,
+    },
+   todoButton: {
+        // borderStyle: 'solid',
+        color:'red',
+        gridColumn: 3,
+    },
 });
 
 class People extends Component {
@@ -35,15 +47,29 @@ class People extends Component {
         //     rows: this.props.users
         // };
 
+
+    }
+
+    getUsers = () => {
         this.props.getUsers();
     }
 
+    getTodos = () => {
+        this.props.getTodos();
+    }
+
+
+
     render() {
-        const {classes, json} = this.props;
+        const {classes, json, data} = this.props;
         console.log(json);
         return (
             <div className="People">
                 <header className="People-header">
+                    <p>
+                        <Button className={classes.userButton} onClick={this.getUsers}> Show Users </Button>
+                        <Button className={classes.todoButton} onClick={this.getTodos}> Show Todos </Button>
+                    </p>
                     <a
                         className="People-link"
                        href="https://www.leapagency.com/about/our-experts"
@@ -52,6 +78,7 @@ class People extends Component {
                     >
                         {/*user_content*/}
                     </a>
+                    {data?
                     <Table className={classes.table}>
                         <TableHead>
                             <TableCell>Name</TableCell>
@@ -76,6 +103,24 @@ class People extends Component {
                             })}
                         </TableBody>
                     </Table>
+                        :
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableCell>Title</TableCell>
+                            <TableCell>Completed</TableCell>
+                        </TableHead>
+                        <TableBody>
+                            {json.map(row => {
+                                return (
+                                    <TableRow key={row.id}>
+                                        <TableCell>{row.title}</TableCell>
+                                        <TableCell>{row.completed}?X:Y</TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                    }
                 </header>
             </div>
         );
@@ -89,13 +134,13 @@ People.PropTypes = {
 
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({ getUsers }, dispatch)
+    return bindActionCreators({ getUsers, getTodos }, dispatch)
 }
 
 const mapStateToProps = state => {
     return {
         json: state.pageReducer.json,
-        abc:state.pageReducer.isReact
+        data:state.pageReducer.data
     };
 }
 

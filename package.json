@@ -19,7 +19,8 @@
     "jsrsasign": "^8.0.6",
     "jsrsasign-util": "^1.0.0",
     "prop-types": "^15.5.10",
-    "rest-api-handler": "^1.8.1"
+    "rest-api-handler": "^1.8.1",
+    "falcor": "^2.0.3-observe-46bc9629"
   },
   "devDependencies": {
     "cross-env": "^5.2.0"

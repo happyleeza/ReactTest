@@ -2,7 +2,8 @@ import * as types from '../actions/actionTypes'
 
 const initialState = {
     isReact: true,
-    json: []
+    json: [],
+    data: true
 };
 
 const pageReducer = (state = initialState, action) => {
@@ -23,7 +24,16 @@ const pageReducer = (state = initialState, action) => {
         case types.API_GETUSER:{
             return {
                 ...state,
-                json: action.json
+                json: action.json,
+                data: true
+            }
+        }
+
+        case types.API_GETTODOS:{
+            return {
+                ...state,
+                json: action.json,
+                data:false
             }
         }
 
